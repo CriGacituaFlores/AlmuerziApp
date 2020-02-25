@@ -27,8 +27,8 @@ export default ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
-      <TextInput style={styles.input} />
-      <TextInput style={styles.input} />
+      <TextInput style={styles.input} placeholder="Email" />
+      <TextInput style={styles.input} placeholder="Password" />
       <Button title="Iniciar sesión" onPress={() => {}} />
       <Button
         title="Registrarse"
