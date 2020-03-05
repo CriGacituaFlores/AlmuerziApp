@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet, Button } from "react-native";
 import useFetch from "../hooks/useFetch";
 
 const styles = StyleSheet.create({
@@ -27,18 +27,28 @@ export default ({ navigation }) => {
           <Button
             title="Aceptar"
             onPress={() => {
-              fetch("https://serverless.crigacituaflores.now.sh/api/orders", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  meal_id: id,
-                  user_id: "lalala"
-                })
-              }).then(() => {
-                alert("Orden fue generada con exito");
-                navigation.navigate("Meals");
+              AsyncStorage.getItem("token").then(x => {
+                if (x) {
+                  fetch(
+                    "https://serverless.crigacituaflores.now.sh/api/orders",
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        authorization: x
+                      },
+                      body: JSON.stringify({
+                        meal_id: id
+                      })
+                    }
+                  ).then(x => {
+                    if (x.status !== 201) {
+                      return alert("La orden no pudo ser generada");
+                    }
+                    alert("Orden fue generada con exito");
+                    navigation.navigate("Meals");
+                  });
+                }
               });
             }}
           />
